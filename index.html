@@ -4,62 +4,85 @@
   <meta charset="UTF-8">
   <title>Mochis Views 🎬</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f9f9f9; }
-    nav { background: #4a148c; padding: 10px; }
-    nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; }
-    section { display: none; padding: 20px; }
-    section.active { display: block; }
-
-    /* Sala de asientos */
-    .sala {
-      display: grid;
-      grid-template-columns: repeat(8, 50px);
-      gap: 10px;
-      justify-content: center;
-      margin: 20px auto;
-      background: #1c1c1c;
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      background: url('https://image.tmdb.org/t/p/original/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg') no-repeat center center fixed;
+      background-size: cover;
     }
-    .asiento {
-      width: 50px; height: 50px;
-      border-radius: 8px;
-      background: #f0f0f0;
+
+    header {
+      text-align: center;
+      padding: 30px;
+      background: rgba(0,0,0,0.6);
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .botones {
       display: flex;
-      align-items: center;
       justify-content: center;
-      font-size: 12px;
+      gap: 20px;
+      margin: 20px;
+    }
+
+    .botones button {
+      padding: 15px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
+      background: #4a148c;
+      color: white;
       transition: transform 0.2s, background 0.2s;
     }
-    .asiento:hover { transform: scale(1.1); background: #ddd; }
-    .mio { background: #2196f3; color: white; font-weight: bold; }
-    .ella { background: #e91e63; color: white; font-weight: bold; }
 
-    /* Valoración */
-    .valoracion {
+    .botones button:hover {
+      transform: scale(1.1);
+      background: #6a1b9a;
+    }
+
+    section {
+      display: none;
+      padding: 20px;
+      background: rgba(0,0,0,0.7);
+      margin: 20px;
+      border-radius: 12px;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    /* Tabla histórico */
+    table {
+      width: 100%;
+      border-collapse: collapse;
       background: #fff;
-      padding: 15px;
-      margin: 15px 0;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      color: #000;
     }
-    .stars span {
-      font-size: 24px;
-      cursor: pointer;
-      color: #ccc;
-      transition: color 0.2s;
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
     }
-    .stars span.active { color: gold; }
+    th {
+      background: #4a148c;
+      color: white;
+    }
   </style>
 </head>
 <body>
-  <nav>
-    <a href="#" onclick="mostrar('registro')">Registro de visita</a>
-    <a href="#" onclick="mostrar('historico')">Histórico de visitas</a>
-    <a href="#" onclick="mostrar('finanzas')">Finanzas</a>
-  </nav>
+  <header>
+    Mochis Views 🎬
+  </header>
+
+  <div class="botones">
+    <button onclick="mostrar('registro')">Registro Mochis</button>
+    <button onclick="mostrar('historico')">Histórico Mochis</button>
+    <button onclick="mostrar('finanzas')">Finanzas Mochis</button>
+  </div>
 
   <!-- Registro -->
   <section id="registro" class="active">
@@ -68,7 +91,7 @@
       Fecha: <input type="date" id="fecha"><br><br>
       Película: <input type="text" id="pelicula"><br><br>
       Cine: 
-      <select id="cine" onchange="cambiarColor()">
+      <select id="cine">
         <option value="">Selecciona</option>
         <option value="cinemex">Cinemex</option>
         <option value="cinepolis">Cinépolis</option>
@@ -97,33 +120,12 @@
 
       <button type="submit">Guardar</button>
     </form>
-
-    <!-- Mapa de asientos -->
-    <h2>Mapa de asientos 🎟️</h2>
-    <div id="mapaAsientos" class="sala"></div>
-
-    <!-- Valoración -->
-    <h2>Valoración de la experiencia ⭐</h2>
-    <div class="valoracion">
-      <h3>Reseña de Mochis 💖</h3>
-      Sala: <span class="stars" data-user="mochis" data-aspect="sala"></span><br>
-      Sonido: <span class="stars" data-user="mochis" data-aspect="sonido"></span><br>
-      Pantalla: <span class="stars" data-user="mochis" data-aspect="pantalla"></span><br>
-      Comida: <span class="stars" data-user="mochis" data-aspect="comida"></span><br>
-    </div>
-    <div class="valoracion">
-      <h3>Reseña de Leoncito 💙</h3>
-      Sala: <span class="stars" data-user="leoncito" data-aspect="sala"></span><br>
-      Sonido: <span class="stars" data-user="leoncito" data-aspect="sonido"></span><br>
-      Pantalla: <span class="stars" data-user="leoncito" data-aspect="pantalla"></span><br>
-      Comida: <span class="stars" data-user="leoncito" data-aspect="comida"></span><br>
-    </div>
   </section>
 
   <!-- Histórico -->
   <section id="historico">
     <h1>Histórico de visitas 📜</h1>
-    <table id="tablaHistorico" border="1">
+    <table id="tablaHistorico">
       <tr>
         <th>Fecha</th>
         <th>Película</th>
@@ -156,18 +158,6 @@
     // Fecha automática
     document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
 
-    // Cambiar color según cine
-    function cambiarColor() {
-      const cine = document.getElementById("cine").value;
-      if (cine === "cinemex") {
-        document.body.style.background = "#ffebee"; // rojo claro
-      } else if (cine === "cinepolis") {
-        document.body.style.background = "#e3f2fd"; // azul claro
-      } else {
-        document.body.style.background = "#f9f9f9";
-      }
-    }
-
     // Guardar registro en histórico
     const form = document.getElementById("formRegistro");
     const tabla = document.getElementById("tablaHistorico");
@@ -181,4 +171,14 @@
       fila.insertCell(3).innerText = document.getElementById("sucursal").value;
       fila.insertCell(4).innerText = document.getElementById("salaTipo").value;
       fila.insertCell(5).innerText = document.getElementById("idioma").value;
-      fila.insertCell(
+      fila.insertCell(6).innerText = document.getElementById("comentarios").value;
+      fila.insertCell(7).innerText = document.getElementById("costoFuncion").value;
+      fila.insertCell(8).innerText = document.getElementById("costoEstacionamiento").value;
+      fila.insertCell(9).innerText = document.getElementById("costoComida").value;
+      fila.insertCell(10).innerText = document.getElementById("costoGustos").value;
+      form.reset();
+      document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
+    });
+  </script>
+</body>
+</html>
