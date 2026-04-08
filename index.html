@@ -91,7 +91,6 @@
 
   <!-- Home -->
   <section id="home" class="active">
-    <h1>Bienvenido a Mochis Views</h1>
     <div class="botones">
       <button onclick="mostrar('registro')">Registro Mochis</button>
       <button onclick="mostrar('historico')">Histórico Mochis</button>
@@ -225,4 +224,11 @@
       acciones.appendChild(btn);
 
       totalFuncion += costoFuncion;
-      totalEst
+      totalEstacionamiento += costoEstacionamiento;
+      totalComida += costoComida;
+      totalGustos += costoGustos;
+
+      actualizarGrafica();
+
+      form.reset();
+      document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
