@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mochis Views 🎬</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f9f9f9; }
+    nav { background: #4a148c; padding: 10px; }
+    nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; }
+    section { display: none; padding: 20px; }
+    section.active { display: block; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#" onclick="mostrar('registro')">Registro de visita</a>
+    <a href="#" onclick="mostrar('historico')">Histórico de visitas</a>
+    <a href="#" onclick="mostrar('finanzas')">Finanzas</a>
+  </nav>
+
+  <!-- Registro -->
+  <section id="registro" class="active">
+    <h1>Registro de visita 🎟️</h1>
+    <form id="formRegistro">
+      Fecha: <input type="date" id="fecha"><br>
+      Película: <input type="text" id="pelicula"><br>
+      Cine: 
+      <select id="cine" onchange="cambiarColor()">
+        <option value="">Selecciona</option>
+        <option value="cinemex">Cinemex</option>
+        <option value="cinepolis">Cinépolis</option>
+      </select><br>
+      Sucursal: <input type="text" id="sucursal"><br>
+      Comentarios: <textarea id="comentarios"></textarea><br>
+      <button type="submit">Guardar</button>
+    </form>
+  </section>
+
+  <!-- Histórico -->
+  <section id="historico">
+    <h1>Histórico de visitas 📜</h1>
+    <table id="tablaHistorico" border="1">
+      <tr>
+        <th>Fecha</th>
+        <th>Película</th>
+        <th>Cine</th>
+        <th>Sucursal</th>
+        <th>Comentarios</th>
+      </tr>
+    </table>
+  </section>
+
+  <!-- Finanzas -->
+  <section id="finanzas">
+    <h1>Finanzas 💰</h1>
+    <p>Aquí mostraremos los gastos por semana, mes y año.</p>
+  </section>
+
+  <script>
+    // Mostrar secciones
+    function mostrar(id) {
+      document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    // Fecha automática
+    document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
+
+    // Cambiar color según cine
+    function cambiarColor() {
+      const cine = document.getElementById("cine").value;
+      if (cine === "cinemex") {
+        document.body.style.background = "#ffebee"; // rojo claro
+      } else if (cine === "cinepolis") {
+        document.body.style.background = "#e3f2fd"; // azul claro
+      } else {
+        document.body.style.background = "#f9f9f9";
+      }
+    }
+
+    // Guardar registro en histórico
+    const form = document.getElementById("formRegistro");
+    const tabla = document.getElementById("tablaHistorico");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const fila = tabla.insertRow();
+      fila.insertCell(0).innerText = document.getElementById("fecha").value;
+      fila.insertCell(1).innerText = document.getElementById("pelicula").value;
+      fila.insertCell(2).innerText = document.getElementById("cine").value;
+      fila.insertCell(3).innerText = document.getElementById("sucursal").value;
+      fila.insertCell(4).innerText = document.getElementById("comentarios").value;
+      form.reset();
+      document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
+    });
+  </script>
+</body>
+</html>
