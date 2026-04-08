@@ -8,7 +8,7 @@
       margin: 0;
       font-family: Arial, sans-serif;
       color: #fff;
-      background: url('https://images.unsplash.com/photo-1598899134739-24c46f58f2d5') no-repeat center center fixed;
+      background: url('https://diamondfilms.com/img/noticias/60b937b7488420fee0e79d9cc.jpg') no-repeat center center fixed;
       background-size: cover;
     }
 
@@ -82,7 +82,6 @@
       background: #c62828;
     }
   </style>
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -90,15 +89,20 @@
     Mochis Views 💖🎬
   </header>
 
-  <div class="botones">
-    <button onclick="mostrar('registro')">Registro Mochis</button>
-    <button onclick="mostrar('historico')">Histórico Mochis</button>
-    <button onclick="mostrar('finanzas')">Finanzas Mochis</button>
-  </div>
+  <!-- Home -->
+  <section id="home" class="active">
+    <h1>Bienvenido a Mochis Views</h1>
+    <div class="botones">
+      <button onclick="mostrar('registro')">Registro Mochis</button>
+      <button onclick="mostrar('historico')">Histórico Mochis</button>
+      <button onclick="mostrar('finanzas')">Finanzas Mochis</button>
+    </div>
+  </section>
 
   <!-- Registro -->
-  <section id="registro" class="active">
+  <section id="registro">
     <h1>Registro de visita 🎟️</h1>
+    <button onclick="mostrar('home')">🏠 Regresar al Home</button><br><br>
     <form id="formRegistro">
       Fecha: <input type="date" id="fecha"><br><br>
       Película: <input type="text" id="pelicula"><br><br>
@@ -137,6 +141,7 @@
   <!-- Histórico -->
   <section id="historico">
     <h1>Histórico de visitas 📜</h1>
+    <button onclick="mostrar('home')">🏠 Regresar al Home</button><br><br>
     <table id="tablaHistorico">
       <tr>
         <th>Fecha</th>
@@ -158,6 +163,7 @@
   <!-- Finanzas -->
   <section id="finanzas">
     <h1>Finanzas 💰</h1>
+    <button onclick="mostrar('home')">🏠 Regresar al Home</button><br><br>
     <canvas id="graficaFinanzas" width="400" height="200"></canvas>
   </section>
 
@@ -226,14 +232,4 @@
       actualizarGrafica();
 
       form.reset();
-      document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
-    });
-
-    let grafica;
-    function actualizarGrafica() {
-      const ctx = document.getElementById("graficaFinanzas").getContext("2d");
-      if(grafica) grafica.destroy();
-      grafica = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels:
+      document.getElementById("fecha").value = new Date().toISOString().
