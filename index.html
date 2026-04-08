@@ -20,39 +20,11 @@
       font-weight: bold;
     }
 
-    .botones {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin: 20px;
-    }
-
-    .botones button {
-      padding: 15px 25px;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #e91e63;
-      color: white;
-      transition: transform 0.2s, background 0.2s;
-    }
-
-    .botones button:hover {
-      transform: scale(1.1);
-      background: #ad1457;
-    }
-
     section {
-      display: none;
       padding: 20px;
       background: rgba(0,0,0,0.7);
       margin: 20px;
       border-radius: 12px;
-    }
-
-    section.active {
-      display: block;
     }
 
     table {
@@ -82,26 +54,15 @@
       background: #c62828;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header>
     Mochis Views 💖🎬
   </header>
 
-  <!-- Home -->
-  <section id="home" class="active">
-    <div class="botones">
-      <button onclick="mostrar('registro')">Registro Mochis</button>
-      <button onclick="mostrar('historico')">Histórico Mochis</button>
-      <button onclick="mostrar('finanzas')">Finanzas Mochis</button>
-    </div>
-  </section>
-
   <!-- Registro -->
   <section id="registro">
     <h1>Registro de visita 🎟️</h1>
-    <button onclick="mostrar('home')">🏠 Regresar al Home</button><br><br>
     <form id="formRegistro">
       Fecha: <input type="date" id="fecha"><br><br>
       Película: <input type="text" id="pelicula"><br><br>
@@ -140,7 +101,6 @@
   <!-- Histórico -->
   <section id="historico">
     <h1>Histórico de visitas 📜</h1>
-    <button onclick="mostrar('home')">🏠 Regresar al Home</button><br><br>
     <table id="tablaHistorico">
       <tr>
         <th>Fecha</th>
@@ -159,29 +119,11 @@
     </table>
   </section>
 
-  <!-- Finanzas -->
-  <section id="finanzas">
-    <h1>Finanzas 💰</h1>
-    <button onclick="mostrar('home')">🏠 Regresar al Home</button><br><br>
-    <canvas id="graficaFinanzas" width="400" height="200"></canvas>
-  </section>
-
   <script>
-    function mostrar(id) {
-      document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-      document.getElementById(id).classList.add("active");
-      if(id === "finanzas") actualizarGrafica();
-    }
-
     document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
 
     const form = document.getElementById("formRegistro");
     const tabla = document.getElementById("tablaHistorico");
-
-    let totalFuncion = 0;
-    let totalEstacionamiento = 0;
-    let totalComida = 0;
-    let totalGustos = 0;
 
     form.addEventListener("submit", function(e) {
       e.preventDefault();
@@ -213,22 +155,12 @@
       const btn = document.createElement("button");
       btn.innerText = "Borrar";
       btn.classList.add("delete-btn");
-      btn.onclick = () => {
-        fila.remove();
-        totalFuncion -= costoFuncion;
-        totalEstacionamiento -= costoEstacionamiento;
-        totalComida -= costoComida;
-        totalGustos -= costoGustos;
-        actualizarGrafica();
-      };
+      btn.onclick = () => fila.remove();
       acciones.appendChild(btn);
 
-      totalFuncion += costoFuncion;
-      totalEstacionamiento += costoEstacionamiento;
-      totalComida += costoComida;
-      totalGustos += costoGustos;
-
-      actualizarGrafica();
-
       form.reset();
-      document
+      document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
+    });
+  </script>
+</body>
+</html>
