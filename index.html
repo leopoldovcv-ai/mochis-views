@@ -168,11 +168,8 @@
 
   <script>
     function mostrar(id) {
-      // Ocultar todas las secciones
       document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-      // Mostrar la sección seleccionada
       document.getElementById(id).classList.add("active");
-      // Actualizar gráfica si estamos en Finanzas
       if(id === "finanzas") actualizarGrafica();
     }
 
@@ -231,4 +228,7 @@
       totalComida += costoComida;
       totalGustos += costoGustos;
 
-      actualizar
+      actualizarGrafica();
+
+      form.reset();
+      document
