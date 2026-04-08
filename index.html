@@ -173,7 +173,6 @@
     const form = document.getElementById("formRegistro");
     const tabla = document.getElementById("tablaHistorico");
 
-    // Datos acumulados para finanzas
     let totalFuncion = 0;
     let totalEstacionamiento = 0;
     let totalComida = 0;
@@ -195,36 +194,34 @@
       fila.insertCell(5).innerText = document.getElementById("idioma").value;
       fila.insertCell(6).innerText = document.getElementById("comentarios").value;
 
-      const costoFuncion = document.getElementById("costoFuncion").value;
-      const costoEstacionamiento = document.getElementById("costoEstacionamiento").value;
-      const costoComida = document.getElementById("costoComida").value;
-      const costoGustos = document.getElementById("costoGustos").value;
+      const costoFuncion = Number(document.getElementById("costoFuncion").value);
+      const costoEstacionamiento = Number(document.getElementById("costoEstacionamiento").value);
+      const costoComida = Number(document.getElementById("costoComida").value);
+      const costoGustos = Number(document.getElementById("costoGustos").value);
 
       fila.insertCell(7).innerText = formatoDinero(costoFuncion);
       fila.insertCell(8).innerText = formatoDinero(costoEstacionamiento);
       fila.insertCell(9).innerText = formatoDinero(costoComida);
       fila.insertCell(10).innerText = formatoDinero(costoGustos);
 
-      // Botón de borrar
       const acciones = fila.insertCell(11);
       const btn = document.createElement("button");
       btn.innerText = "Borrar";
       btn.classList.add("delete-btn");
       btn.onclick = () => {
         fila.remove();
-        totalFuncion -= Number(costoFuncion);
-        totalEstacionamiento -= Number(costoEstacionamiento);
-        totalComida -= Number(costoComida);
-        totalGustos -= Number(costoGustos);
+        totalFuncion -= costoFuncion;
+        totalEstacionamiento -= costoEstacionamiento;
+        totalComida -= costoComida;
+        totalGustos -= costoGustos;
         actualizarGrafica();
       };
       acciones.appendChild(btn);
 
-      // Sumar a totales
-      totalFuncion += Number(costoFuncion);
-      totalEstacionamiento += Number(costoEstacionamiento);
-      totalComida += Number(costoComida);
-      totalGustos += Number(costoGustos);
+      totalFuncion += costoFuncion;
+      totalEstacionamiento += costoEstacionamiento;
+      totalComida += costoComida;
+      totalGustos += costoGustos;
 
       actualizarGrafica();
 
@@ -232,8 +229,11 @@
       document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
     });
 
-    // Gráfica con Chart.js
     let grafica;
     function actualizarGrafica() {
       const ctx = document.getElementById("graficaFinanzas").getContext("2d");
-      if(graf
+      if(grafica) grafica.destroy();
+      grafica = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels:
