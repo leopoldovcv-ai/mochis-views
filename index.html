@@ -8,7 +8,7 @@
       margin: 0;
       font-family: Arial, sans-serif;
       color: #fff;
-      background: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee') no-repeat center center fixed;
+      background: url('https://images.unsplash.com/photo-1517602302552-471fe67acf66') no-repeat center center fixed;
       background-size: cover;
     }
 
@@ -33,7 +33,7 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      background: #e91e63; /* rosa romántico */
+      background: #e91e63;
       color: white;
       transition: transform 0.2s, background 0.2s;
     }
@@ -69,6 +69,17 @@
     th {
       background: #e91e63;
       color: white;
+    }
+    .delete-btn {
+      background: #f44336;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .delete-btn:hover {
+      background: #c62828;
     }
   </style>
 </head>
@@ -137,6 +148,7 @@
         <th>Estacionamiento</th>
         <th>Comida</th>
         <th>Gustos</th>
+        <th>Acciones</th>
       </tr>
     </table>
   </section>
@@ -160,6 +172,12 @@
 
     form.addEventListener("submit", function(e) {
       e.preventDefault();
+
+      // Función para formatear con $
+      function formatoDinero(valor) {
+        return valor ? `$${valor}` : "";
+      }
+
       const fila = tabla.insertRow();
       fila.insertCell(0).innerText = document.getElementById("fecha").value;
       fila.insertCell(1).innerText = document.getElementById("pelicula").value;
@@ -168,10 +186,19 @@
       fila.insertCell(4).innerText = document.getElementById("salaTipo").value;
       fila.insertCell(5).innerText = document.getElementById("idioma").value;
       fila.insertCell(6).innerText = document.getElementById("comentarios").value;
-      fila.insertCell(7).innerText = document.getElementById("costoFuncion").value;
-      fila.insertCell(8).innerText = document.getElementById("costoEstacionamiento").value;
-      fila.insertCell(9).innerText = document.getElementById("costoComida").value;
-      fila.insertCell(10).innerText = document.getElementById("costoGustos").value;
+      fila.insertCell(7).innerText = formatoDinero(document.getElementById("costoFuncion").value);
+      fila.insertCell(8).innerText = formatoDinero(document.getElementById("costoEstacionamiento").value);
+      fila.insertCell(9).innerText = formatoDinero(document.getElementById("costoComida").value);
+      fila.insertCell(10).innerText = formatoDinero(document.getElementById("costoGustos").value);
+
+      // Botón de borrar
+      const acciones = fila.insertCell(11);
+      const btn = document.createElement("button");
+      btn.innerText = "Borrar";
+      btn.classList.add("delete-btn");
+      btn.onclick = () => fila.remove();
+      acciones.appendChild(btn);
+
       form.reset();
       document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
     });
