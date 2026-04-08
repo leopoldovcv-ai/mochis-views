@@ -74,7 +74,27 @@
         <option value="cinepolis">Cinépolis</option>
       </select><br><br>
       Sucursal: <input type="text" id="sucursal"><br><br>
+      Tipo de sala: 
+      <select id="salaTipo">
+        <option value="">Selecciona</option>
+        <option value="tradicional">Tradicional</option>
+        <option value="vip">VIP</option>
+        <option value="imax">IMAX</option>
+        <option value="4dx">4DX</option>
+      </select><br><br>
+      Idioma: 
+      <select id="idioma">
+        <option value="espanol">Español</option>
+        <option value="subtitulado">Subtitulado</option>
+      </select><br><br>
       Comentarios: <textarea id="comentarios"></textarea><br><br>
+
+      <!-- Costos -->
+      Costo función: <input type="number" id="costoFuncion" placeholder="$"><br><br>
+      Estacionamiento: <input type="number" id="costoEstacionamiento" placeholder="$"><br><br>
+      Comida: <input type="number" id="costoComida" placeholder="$"><br><br>
+      Gustos extra: <input type="number" id="costoGustos" placeholder="$"><br><br>
+
       <button type="submit">Guardar</button>
     </form>
 
@@ -109,7 +129,13 @@
         <th>Película</th>
         <th>Cine</th>
         <th>Sucursal</th>
+        <th>Tipo de sala</th>
+        <th>Idioma</th>
         <th>Comentarios</th>
+        <th>Función</th>
+        <th>Estacionamiento</th>
+        <th>Comida</th>
+        <th>Gustos</th>
       </tr>
     </table>
   </section>
@@ -153,39 +179,6 @@
       fila.insertCell(1).innerText = document.getElementById("pelicula").value;
       fila.insertCell(2).innerText = document.getElementById("cine").value;
       fila.insertCell(3).innerText = document.getElementById("sucursal").value;
-      fila.insertCell(4).innerText = document.getElementById("comentarios").value;
-      form.reset();
-      document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
-    });
-
-    // Crear mapa de asientos
-    const mapa = document.getElementById("mapaAsientos");
-    for (let fila = 0; fila < 5; fila++) {
-      for (let col = 0; col < 8; col++) {
-        const asiento = document.createElement("div");
-        asiento.classList.add("asiento");
-        asiento.innerText = `${fila+1}-${col+1}`;
-        asiento.addEventListener("click", () => {
-          if (asiento.classList.contains("mio")) {
-            asiento.classList.remove("mio");
-            asiento.classList.add("ella");
-          } else if (asiento.classList.contains("ella")) {
-            asiento.classList.remove("ella");
-          } else {
-            asiento.classList.add("mio");
-          }
-        });
-        mapa.appendChild(asiento);
-      }
-    }
-
-    // Crear estrellas dinámicamente
-    document.querySelectorAll(".stars").forEach(container => {
-      for (let i = 1; i <= 5; i++) {
-        const star = document.createElement("span");
-        star.innerHTML = "★";
-        star.dataset.value = i;
-        star.addEventListener("click", () => {
-          container.querySelectorAll("span").forEach(s => s.classList.remove("active"));
-          for (let j = 1; j <= i; j++) {
-            container.querySelector(`span[data-value='
+      fila.insertCell(4).innerText = document.getElementById("salaTipo").value;
+      fila.insertCell(5).innerText = document.getElementById("idioma").value;
+      fila.insertCell(
