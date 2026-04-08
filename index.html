@@ -8,7 +8,7 @@
       margin: 0;
       font-family: Arial, sans-serif;
       color: #fff;
-      background: url('https://image.tmdb.org/t/p/original/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg') no-repeat center center fixed;
+      background: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee') no-repeat center center fixed;
       background-size: cover;
     }
 
@@ -33,14 +33,14 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      background: #4a148c;
+      background: #e91e63; /* rosa romántico */
       color: white;
       transition: transform 0.2s, background 0.2s;
     }
 
     .botones button:hover {
       transform: scale(1.1);
-      background: #6a1b9a;
+      background: #ad1457;
     }
 
     section {
@@ -55,7 +55,6 @@
       display: block;
     }
 
-    /* Tabla histórico */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -68,14 +67,14 @@
       text-align: center;
     }
     th {
-      background: #4a148c;
+      background: #e91e63;
       color: white;
     }
   </style>
 </head>
 <body>
   <header>
-    Mochis Views 🎬
+    Mochis Views 💖🎬
   </header>
 
   <div class="botones">
@@ -149,16 +148,13 @@
   </section>
 
   <script>
-    // Mostrar secciones
     function mostrar(id) {
       document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
       document.getElementById(id).classList.add("active");
     }
 
-    // Fecha automática
     document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
 
-    // Guardar registro en histórico
     const form = document.getElementById("formRegistro");
     const tabla = document.getElementById("tablaHistorico");
 
