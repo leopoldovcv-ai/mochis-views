@@ -171,6 +171,55 @@
 <!-- Finanzas -->
 <section id="finanzas">
   <h1>Finanzas 💰</h1>
+
+  <label for="mes">Mes:</label>
+  <select id="mes">
+    <option value="01">Enero</option>
+    <option value="02">Febrero</option>
+    <option value="03">Marzo</option>
+    <option value="04">Abril</option>
+    <option value="05">Mayo</option>
+    <option value="06">Junio</option>
+    <option value="07">Julio</option>
+    <option value="08">Agosto</option>
+    <option value="09">Septiembre</option>
+    <option value="10">Octubre</option>
+    <option value="11">Noviembre</option>
+    <option value="12">Diciembre</option>
+  </select>
+
+  <label for="anio">Año:</label>
+  <input type="number" id="anio" value="2026">
+
+  <button onclick="filtrarFinanzas()">Filtrar</button>
+
+  <div id="resumenFinanzas"></div>
+  <canvas id="graficaFinanzas" width="400" height="200"></canvas>
+</section><section id="finanzas">
+  <h1>Finanzas 💰</h1>
+
+  <label for="mes">Mes:</label>
+  <select id="mes">
+    <option value="01">Enero</option>
+    <option value="02">Febrero</option>
+    <option value="03">Marzo</option>
+    <option value="04">Abril</option>
+    <option value="05">Mayo</option>
+    <option value="06">Junio</option>
+    <option value="07">Julio</option>
+    <option value="08">Agosto</option>
+    <option value="09">Septiembre</option>
+    <option value="10">Octubre</option>
+    <option value="11">Noviembre</option>
+    <option value="12">Diciembre</option>
+  </select>
+
+  <label for="anio">Año:</label>
+  <input type="number" id="anio" value="2026">
+
+  <button onclick="filtrarFinanzas()">Filtrar</button>
+
+  <div id="resumenFinanzas"></div>
   <canvas id="graficaFinanzas" width="400" height="200"></canvas>
 </section>
 
@@ -314,6 +363,60 @@ function actualizarGrafica() {
 // Inicializar tabla y gráfica al cargar
 renderTabla();
 actualizarGrafica();
+
+  function filtrarFinanzas() {
+  const mes = document.getElementById("mes").value;
+  const anio = document.getElementById("anio").value;
+  const datos = obtenerDatos();
+
+  let totalFuncion = 0, totalEstacionamiento = 0, totalComida = 0, totalGustos = 0;
+
+  datos.forEach(item => {
+    const fecha = new Date(item.fecha);
+    const itemMes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const itemAnio = fecha.getFullYear();
+
+    if(itemMes === mes && itemAnio == anio) {
+      totalFuncion += item.funcion;
+      totalEstacionamiento += item.estacionamiento;
+      totalComida += item.comida;
+      totalGustos += item.gustos;
+    }
+  });
+
+  const total = totalFuncion + totalEstacionamiento + totalComida + totalGustos;
+
+  // Mostrar resumen en texto
+  document.getElementById("resumenFinanzas").innerHTML = `
+    <p>Gasto en función: $${totalFuncion}</p>
+    <p>Gasto en estacionamiento: $${totalEstacionamiento}</p>
+    <p>Gasto en comida: $${totalComida}</p>
+    <p>Gasto en gustos: $${totalGustos}</p>
+    <h3>Total del mes: $${total}</h3>
+  `;
+
+  // Dibujar gráfica de barras
+  const ctx = document.getElementById("graficaFinanzas").getContext("2d");
+  if(window.grafica) window.grafica.destroy();
+
+  window.grafica = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ["Función", "Estacionamiento", "Comida", "Gustos"],
+      datasets: [{
+        label: `Gastos ${mes}/${anio}`,
+        data: [totalFuncion, totalEstacionamiento, totalComida, totalGustos],
+        backgroundColor: ["#e91e63", "#9c27b0", "#3f51b5", "#ff9800"]
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+}
 </script>
 </body>
 </html>
