@@ -14,17 +14,51 @@
 
     header {
       text-align: center;
-      padding: 30px;
+      padding: 20px;
       background: rgba(0,0,0,0.6);
-      font-size: 32px;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      background: rgba(0,0,0,0.7);
+      padding: 10px;
+    }
+
+    nav button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #e91e63;
+      color: white;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    nav button:hover {
+      transform: scale(1.1);
+      background: #ad1457;
+    }
+
+    nav button.active {
+      background: #ff4081;
       font-weight: bold;
     }
 
     section {
+      display: none;
       padding: 20px;
       background: rgba(0,0,0,0.7);
       margin: 20px;
       border-radius: 12px;
+    }
+
+    section.active {
+      display: block;
     }
 
     table {
@@ -59,31 +93,32 @@
     }
   </style>
 </head>
-
 <body>
 
 <header>
   Mochis Views 💖🎬
 </header>
 
+<!-- Botones de navegación -->
+<nav>
+  <button onclick="mostrar('registro')" id="btnRegistro">Registro Mochis</button>
+  <button onclick="mostrar('historico')" id="btnHistorico">Histórico Mochis</button>
+  <button onclick="mostrar('finanzas')" id="btnFinanzas">Finanzas Mochis</button>
+</nav>
+
 <!-- Registro -->
-<section>
+<section id="registro" class="active">
   <h1>Registro de visita 🎟️</h1>
   <form id="formRegistro">
-
     Fecha: <input type="date" id="fecha"><br><br>
-
     Película: <input type="text" id="pelicula"><br><br>
-
     Cine:
     <select id="cine">
       <option value="">Selecciona</option>
       <option value="Cinemex">Cinemex</option>
       <option value="Cinépolis">Cinépolis</option>
     </select><br><br>
-
     Sucursal: <input type="text" id="sucursal"><br><br>
-
     Tipo de sala:
     <select id="salaTipo">
       <option value="">Selecciona</option>
@@ -92,18 +127,14 @@
       <option value="IMAX">IMAX</option>
       <option value="4DX">4DX</option>
     </select><br><br>
-
     Idioma:
     <select id="idioma">
       <option value="Español">Español</option>
       <option value="Subtitulado">Subtitulado</option>
     </select><br><br>
-
-    Comentarios:
-    <textarea id="comentarios"></textarea><br><br>
+    Comentarios: <textarea id="comentarios"></textarea><br><br>
 
     <h3>Costos 💰</h3>
-
     Función: <input type="number" id="costoFuncion"><br><br>
     Estacionamiento: <input type="number" id="costoEstacionamiento"><br><br>
     Comida: <input type="number" id="costoComida"><br><br>
@@ -114,9 +145,8 @@
 </section>
 
 <!-- Histórico -->
-<section>
+<section id="historico">
   <h1>Histórico de visitas 📜</h1>
-
   <table id="tablaHistorico">
     <tr>
       <th>Fecha</th>
@@ -134,117 +164,69 @@
       <th>Acciones</th>
     </tr>
   </table>
+</section>
 
+<!-- Finanzas -->
+<section id="finanzas">
+  <h1>Finanzas 💰</h1>
+  <p>Aquí podemos poner un resumen o gráfica de gastos.</p>
 </section>
 
 <script>
-  const form = document.getElementById("formRegistro");
-  const tabla = document.getElementById("tablaHistorico");
+  // Navegación entre secciones
+  function mostrar(id) {
+    document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+
+    document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+    if(id === "registro") document.getElementById("btnRegistro").classList.add("active");
+    if(id === "historico") document.getElementById("btnHistorico").classList.add("active");
+    if(id === "finanzas") document.getElementById("btnFinanzas").classList.add("active");
+  }
 
   document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
 
-  function formatoDinero(valor) {
-    return $${valor || 0};
-  }
-
-  function obtenerDatos() {
-    return JSON.parse(localStorage.getItem("visitas")) || [];
-  }
-
-  function guardarDatos(datos) {
-    localStorage.setItem("visitas", JSON.stringify(datos));
-  }
-
-  function renderTabla() {
-    tabla.innerHTML = `
-      <tr>
-        <th>Fecha</th>
-        <th>Película</th>
-        <th>Cine</th>
-        <th>Sucursal</th>
-        <th>Tipo de sala</th>
-        <th>Idioma</th>
-        <th>Comentarios</th>
-        <th>Función</th>
-        <th>Estacionamiento</th>
-        <th>Comida</th>
-        <th>Gustos</th>
-        <th>Total</th>
-        <th>Acciones</th>
-      </tr>
-    `;
-
-    const datos = obtenerDatos();
-
-    datos.forEach((item) => {
-      const fila = tabla.insertRow();
-
-      fila.insertCell(0).innerText = item.fecha;
-      fila.insertCell(1).innerText = item.pelicula;
-      fila.insertCell(2).innerText = item.cine;
-      fila.insertCell(3).innerText = item.sucursal;
-      fila.insertCell(4).innerText = item.sala;
-      fila.insertCell(5).innerText = item.idioma;
-      fila.insertCell(6).innerText = item.comentarios;
-
-      fila.insertCell(7).innerText = formatoDinero(item.funcion);
-      fila.insertCell(8).innerText = formatoDinero(item.estacionamiento);
-      fila.insertCell(9).innerText = formatoDinero(item.comida);
-      fila.insertCell(10).innerText = formatoDinero(item.gustos);
-
-      const total = item.funcion + item.estacionamiento + item.comida + item.gustos;
-      fila.insertCell(11).innerText = formatoDinero(total);
-
-      const acciones = fila.insertCell(12);
-
-      const btn = document.createElement("button");
-      btn.innerText = "Borrar";
-      btn.classList.add("delete-btn");
-
-      btn.onclick = () => {
-        let datosActualizados = obtenerDatos().filter(d => d.id !== item.id);
-        guardarDatos(datosActualizados);
-        renderTabla();
-      };
-
-      acciones.appendChild(btn);
-    });
-  }
+  const form = document.getElementById("formRegistro");
+  const tabla = document.getElementById("tablaHistorico");
 
   form.addEventListener("submit", function(e) {
     e.preventDefault();
 
-    if (!document.getElementById("pelicula").value) {
-      alert("Pon el nombre de la película 🎬");
-      return;
+    function formatoDinero(valor) {
+      return `$${valor || 0}`;
     }
 
-    const nuevaVisita = {
-      id: Date.now(),
-      fecha: document.getElementById("fecha").value,
-      pelicula: document.getElementById("pelicula").value,
-      cine: document.getElementById("cine").value,
-      sucursal: document.getElementById("sucursal").value,
-      sala: document.getElementById("salaTipo").value,
-      idioma: document.getElementById("idioma").value,
-      comentarios: document.getElementById("comentarios").value,
-      funcion: Number(document.getElementById("costoFuncion").value) || 0,
-      estacionamiento: Number(document.getElementById("costoEstacionamiento").value) || 0,
-      comida: Number(document.getElementById("costoComida").value) || 0,
-      gustos: Number(document.getElementById("costoGustos").value) || 0
-    };
+    const fila = tabla.insertRow();
+    fila.insertCell(0).innerText = document.getElementById("fecha").value;
+    fila.insertCell(1).innerText = document.getElementById("pelicula").value;
+    fila.insertCell(2).innerText = document.getElementById("cine").value;
+    fila.insertCell(3).innerText = document.getElementById("sucursal").value;
+    fila.insertCell(4).innerText = document.getElementById("salaTipo").value;
+    fila.insertCell(5).innerText = document.getElementById("idioma").value;
+    fila.insertCell(6).innerText = document.getElementById("comentarios").value;
 
-    const datos = obtenerDatos();
-    datos.push(nuevaVisita);
+    const funcion = Number(document.getElementById("costoFuncion").value) || 0;
+    const estacionamiento = Number(document.getElementById("costoEstacionamiento").value) || 0;
+    const comida = Number(document.getElementById("costoComida").value) || 0;
+    const gustos = Number(document.getElementById("costoGustos").value) || 0;
+    const total = funcion + estacionamiento + comida + gustos;
 
-    guardarDatos(datos);
-    renderTabla();
+    fila.insertCell(7).innerText = formatoDinero(funcion);
+    fila.insertCell(8).innerText = formatoDinero(estacionamiento);
+    fila.insertCell(9).innerText = formatoDinero(comida);
+    fila.insertCell(10).innerText = formatoDinero(gustos);
+    fila.insertCell(11).innerText = formatoDinero(total);
+
+    const acciones = fila.insertCell(12);
+    const btn = document.createElement("button");
+    btn.innerText = "Borrar";
+    btn.classList.add("delete-btn");
+    btn.onclick = () => fila.remove();
+    acciones.appendChild(btn);
 
     form.reset();
     document.getElementById("fecha").value = new Date().toISOString().split("T")[0];
   });
-
-  renderTabla();
 </script>
 
 </body>
